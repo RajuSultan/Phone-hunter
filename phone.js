@@ -56,7 +56,7 @@ const moreformation = (data) => {
     <div class="card-body">
       <h5 class="card-title">${data.name}</h5>
       <p class="card-text">${data.brand}</p>
-      <p>ReleaseDate:${data?.releaseDate}</p>
+      <p>ReleaseDate:${data.releaseDate ? data.releaseDate : " Release Date not Found"}</p>
 
     </div>
     <p class="text-center text-danger">Main Features:</p>
