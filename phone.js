@@ -7,15 +7,20 @@ const phonesApi = () => {
         .then(res => res.json())
         .then(data => apiInformation(data.data))
 }
-const apiInformation = (data) => {
-
+const apiInformation = (info) => {
+    const data = info.slice(0, 20);
     // console.log(data.length);
-    if (data.length == 0) {
-        alert("No result found");
-    }
+    // if (data.length == 0) {
+    //     alert("No result found");
+    // }
     const productsfield = document.getElementById("product-box");
     productsfield.innerHTML = "";
     data.forEach(phone => {
+        if (data.length === 19) {
+            // break;
+            productsfield.innerText = "no more";
+            console.log("Over");
+        }
         // console.log(phone);
         const div = document.createElement("div");
         div.classList.add("col");
@@ -51,7 +56,7 @@ const moreformation = (data) => {
     <div class="card-body">
       <h5 class="card-title">${data.name}</h5>
       <p class="card-text">${data.brand}</p>
-      <p>ReleaseDate:${data.releaseDate}</p>
+      <p>ReleaseDate:${data?.releaseDate}</p>
 
     </div>
     <p class="text-center text-danger">Main Features:</p>
@@ -60,6 +65,7 @@ const moreformation = (data) => {
       <li class="list-group-item"><span class="text-primary">DisplaySize: </span>${data.mainFeatures.displaySize}</li>
       <li class="list-group-item"><span class="text-primary">ChipSet: </span>${data.mainFeatures.chipSet}</li>
       <li class="list-group-item"><span class="text-primary">Memory: </span>${data.mainFeatures.memory}</li>
+      <li class="list-group-item"><span class="text-primary">Sensors: </span>${data.mainFeatures.sensors}</li>
     </ul>
     <p class="text-center text-danger">Others:</p>
     <ul class="list-group list-group-flush">
