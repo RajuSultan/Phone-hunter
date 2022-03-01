@@ -1,4 +1,16 @@
+const spinnerShowing = (info) => {
+    document.getElementById("spinner").style.display = info;
+}
+const productBoxShowing = (info) => {
+    document.getElementById("product-box").style.display = info;
+}
+const moreDetailsShowing = (info) => {
+    document.getElementById("more-details").style.display = info;
+}
 const phonesApi = () => {
+    spinnerShowing("block");
+    productBoxShowing("none");
+    moreDetailsShowing("none");
     const input = document.getElementById("input-box");
     const inputValue = input.value;
     // console.log(inputValue);
@@ -10,9 +22,9 @@ const phonesApi = () => {
 const apiInformation = (info) => {
     const data = info.slice(0, 20);
     // console.log(data.length);
-    // if (data.length == 0) {
-    //     alert("No result found");
-    // }
+    if (data.length == 0) {
+        alert("No result found");
+    }
     const productsfield = document.getElementById("product-box");
     productsfield.innerHTML = "";
     data.forEach(phone => {
@@ -35,6 +47,9 @@ const apiInformation = (info) => {
             </div>
         `;
         productsfield.appendChild(div);
+        productBoxShowing("flex");
+        spinnerShowing("none");
+
     })
 }
 const moreDetails = (id) => {
@@ -77,6 +92,7 @@ const moreformation = (data) => {
   </div>
         `;
     moreDetailsfield.appendChild(div);
+    moreDetailsShowing("block");
     // console.log(productsfield);
 
 }
