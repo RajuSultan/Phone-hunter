@@ -1,3 +1,4 @@
+// display correction when spinner Showing
 const spinnerShowing = (info) => {
     document.getElementById("spinner").style.display = info;
 }
@@ -7,51 +8,66 @@ const productBoxShowing = (info) => {
 const moreDetailsShowing = (info) => {
     document.getElementById("more-details").style.display = info;
 }
+// phones info findout by search result from Phones API
 const phonesApi = () => {
     spinnerShowing("block");
     productBoxShowing("none");
     moreDetailsShowing("none");
+    document.getElementById("show-more").style.display = "none";
     const input = document.getElementById("input-box");
     const inputValue = input.value;
     // console.log(inputValue);
-    input.value = "";
+    // input.value = "";
     fetch(`https://openapi.programming-hero.com/api/phones?search=${inputValue}`)
         .then(res => res.json())
         .then(data => apiInformation(data.data))
 }
+
+// showing searching phones
+
 const apiInformation = (info) => {
     const data = info.slice(0, 20);
-    // console.log(data.length);
+
+    console.log(info.length);
+    // no result found error handle
     if (data.length == 0) {
-        alert("No result found");
+        spinnerShowing("none");
+        alert("No Result Found");
     }
     const productsfield = document.getElementById("product-box");
     productsfield.innerHTML = "";
+
+    // phones appending
     data.forEach(phone => {
-        if (data.length === 19) {
-            // break;
-            productsfield.innerText = "no more";
-            console.log("Over");
-        }
         // console.log(phone);
         const div = document.createElement("div");
         div.classList.add("col");
         div.innerHTML = `
-            <div class="card h-100 shadow rounded border-0">
-                <img  class="w-75" src="${phone.image}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">${phone.phone_name}</h5>
-                    <p class="card-text">${phone.brand}</p>
-                    <button onclick="moreDetails('${phone.slug}')" class="btn btn-primary" type="submit">Details</button>
+                <div class="card h-100 shadow rounded border-0">
+                    <img  class="w-75" src="${phone.image}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">${phone.phone_name}</h5>
+                        <p class="card-text">${phone.brand}</p>
+                        <button onclick="moreDetails('${phone.slug}')" class="btn btn-primary" type="submit">Details</button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
         productsfield.appendChild(div);
         productBoxShowing("flex");
         spinnerShowing("none");
 
     })
+    if (info.length > 20) {
+        const data1 = info.slice(20, info.length);
+        console.log(data1.length);
+        document.getElementById("show-more").style.display = "block";
+    }
+    document.getElementById("previous").style.display = "none";
 }
+
+
+
+// More Details collect from API
 const moreDetails = (id) => {
     // console.log(id);
     const url = `https://openapi.programming-hero.com/api/phone/${id}`;
@@ -59,6 +75,7 @@ const moreDetails = (id) => {
         .then(res => res.json())
         .then(data => moreformation(data.data))
 }
+// More Details showing 
 const moreformation = (data) => {
     // console.log(data);
     const moreDetailsfield = document.getElementById("more-details");
@@ -94,5 +111,47 @@ const moreformation = (data) => {
     moreDetailsfield.appendChild(div);
     moreDetailsShowing("block");
     // console.log(productsfield);
+
+}
+// ----------------------see More Phones start ------------------------//
+
+// phones info findout by search result from Phones API
+
+const seeMoreFunction = () => {
+    const input = document.getElementById("input-box");
+    const inputValue = input.value;
+    fetch(`https://openapi.programming-hero.com/api/phones?search=${inputValue}`)
+        .then(res => res.json())
+        .then(data => seeMoreInformation(data.data))
+}
+
+const seeMoreInformation = (info) => {
+    const data1 = info.slice(20, info.length);
+    // no result found error handle
+    if (data1.length == 0) {
+        spinnerShowing("none");
+        alert("No Result Found");
+    }
+    const productsfield = document.getElementById("product-box");
+    productsfield.innerHTML = "";
+    data1.forEach(phone => {
+        // console.log(phone);
+        const div = document.createElement("div");
+        div.classList.add("col");
+        div.innerHTML = `
+            <div class="card h-100 shadow rounded border-0">
+                <img  class="w-75" src="${phone.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${phone.phone_name}</h5>
+                    <p class="card-text">${phone.brand}</p>
+                    <button onclick="moreDetails('${phone.slug}')" class="btn btn-primary" type="submit">Details</button>
+                </div>
+            </div>
+        `;
+        productsfield.appendChild(div);
+        document.getElementById("show-more").style.display = "none";
+        document.getElementById("previous").style.display = "block";
+
+    })
 
 }
