@@ -28,11 +28,15 @@ const phonesApi = () => {
 const apiInformation = (info) => {
     const data = info.slice(0, 20);
 
-    console.log(info.length);
+    // console.log(info.length);
     // no result found error handle
     if (data.length == 0) {
         spinnerShowing("none");
+        const input = document.getElementById("input-box");
+        input.value = "";
         alert("No Result Found");
+        document.getElementById("show-more").style.display = "none";
+
     }
     const productsfield = document.getElementById("product-box");
     productsfield.innerHTML = "";
@@ -59,7 +63,7 @@ const apiInformation = (info) => {
     })
     if (info.length > 20) {
         const data1 = info.slice(20, info.length);
-        console.log(data1.length);
+        // console.log(data1.length);
         document.getElementById("show-more").style.display = "block";
     }
     document.getElementById("previous").style.display = "none";
@@ -69,6 +73,7 @@ const apiInformation = (info) => {
 
 // More Details collect from API
 const moreDetails = (id) => {
+
     // console.log(id);
     const url = `https://openapi.programming-hero.com/api/phone/${id}`;
     fetch(url)
@@ -110,6 +115,7 @@ const moreformation = (data) => {
         `;
     moreDetailsfield.appendChild(div);
     moreDetailsShowing("block");
+    moreDetailsfield.scrollIntoView();
     // console.log(productsfield);
 
 }
@@ -149,6 +155,7 @@ const seeMoreInformation = (info) => {
             </div>
         `;
         productsfield.appendChild(div);
+        productsfield.scrollIntoView();
         document.getElementById("show-more").style.display = "none";
         document.getElementById("previous").style.display = "block";
 
